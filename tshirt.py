@@ -1,7 +1,8 @@
 import tensorflow as tf
 import tensorflow_datasets as tfds
 import matplotlib.pyplot as plt
-import math 
+import math
+import numpy as np 
 
 (data, ds_info) = tfds.load('fashion_mnist', as_supervised=True, with_info=True)
 
@@ -58,9 +59,22 @@ batch_size = 32
 training_data = training_data.repeat().shuffle(num_training).batch(batch_size)
 test_data = test_data.batch(batch_size)
 
-history = model.fit(training_data, epochs=5, steps_per_epoch=math.ceil(num_training/batch_size))
+history = model.fit(
+    training_data, 
+    epochs=10, 
+    steps_per_epoch=math.ceil(num_training/batch_size)
+    )
 
 plt.xlabel("# Epoch")
 plt.ylabel("magnitude of loss")
 plt.plot(history.history["loss"])
 plt.show()
+
+# test_loss, test_accuracy = model.evaluate(test_data)
+# print(f'Test accuracy: {test_accuracy}')
+# print(f'Test loss: {test_loss}')
+# test_images, test_labels = next(iter(test_data.batch(1)))
+
+# predictions = model.predict(test_images)
+# predicted_label = np.argmax(predictions[0])
+# print(f'Predicted label: {predicted_label}')
